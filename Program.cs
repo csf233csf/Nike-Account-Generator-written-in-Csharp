@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Threading;
@@ -28,17 +28,21 @@ namespace NikeAccountGen
         {
 
             int gennumber;
+            string catchallemail;
 
             Console.WriteLine("Please Enter how many acccounts you want to generate.");
 
             gennumber = Convert.ToInt32(Console.ReadLine());
 
+            Console.WriteLine("Please Enter your catchall Example: '@catchall.com' ");
+
+            catchallemail = Console.ReadLine();
 
             for (int i = 0; i < gennumber; i++)
             {
                 var faker2 = new Faker("en");
 
-                var pofemail = faker2.Name.FirstName() + faker2.Name.LastName() + Convert.ToString(faker2.Random.Number(1243211, 45237728)) + "@yourcatchall.com";
+                var pofemail = faker2.Name.FirstName() + faker2.Name.LastName() + Convert.ToString(faker2.Random.Number(1243211, 45237728)) + catchallemail;
 
                 var Fname = faker2.Name.FirstName();
 
@@ -82,12 +86,13 @@ namespace NikeAccountGen
                 ChromeOptions options = new ChromeOptions();
                 options.AddArgument("--user-agent=" + GenUserAgent);
                 // You can change your useragent here.
-                
+
                 IWebDriver driver = new ChromeDriver(options);
 
                 driver.Navigate().GoToUrl("https://www.nike.com/register");
 
-                int SleepingTime = 2000;
+                Thread.Sleep(2500);
+                int SleepingTime = 2500;
 
                 while (true)
                 {
@@ -120,16 +125,18 @@ namespace NikeAccountGen
 
                     catch (NoSuchElementException)
                     {
-
-                        SleepingTime += 1000;
-
                         driver.Close();
 
 
                         IWebDriver newdriver = new ChromeDriver(options);
+
+                        GenUserAgent = faker2.Internet.UserAgent();
+
+                        options.AddArgument("--user-agent=" + GenUserAgent);
+
                         driver = newdriver;
 
-                        driver.Navigate().GoToUrl("https://www.nike.com/register");
+                        newdriver.Navigate().GoToUrl("https://www.nike.com/register");
 
                         Console.WriteLine("Can't find the next Element, restarting...");
                         Console.WriteLine("Sleeping for " + SleepingTime + "ms...");
@@ -188,7 +195,9 @@ namespace NikeAccountGen
                     Thread.Sleep(4000);
 
 
-                    File.AppendAllLines("accounts.txt", new[] { pofemail + ":" + Passw });
+                    File.AppendAllLines("accounts.txt", new[] { pofemail + ":" + Passw + "\nUseragent used:" + GenUserAgent });
+
+                    File.AppendAllLines("useragent used.txt", new[] {"\nUseragent:" + GenUserAgent });
 
                     driver.Quit();
 
