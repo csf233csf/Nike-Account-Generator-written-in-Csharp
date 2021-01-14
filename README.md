@@ -7,3 +7,7 @@ Things to add:
 1. SMSCODE API support
 2. Rewrite the loop to have better error-handle
 3. Proxy Support
+
+1/14
+In order to collect useragent that's usable, now after an account is generated, it writes a file that contains all the usable useragent.
+Improved sleeping time.
