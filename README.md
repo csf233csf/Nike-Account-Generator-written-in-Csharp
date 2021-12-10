@@ -8,6 +8,7 @@ Things to add:
 2. Rewrite the loop to have better error-handle
 3. Proxy Support
 
-1/14
-In order to collect useragent that's usable, now after an account is generated, it writes a file that contains all the usable useragent.
-Improved sleeping time.
+update: 
+very interesting prototype that I abandoned. 
+I fixed everything for the private repo
+Looking for people to test, currently have 2 people testing.
